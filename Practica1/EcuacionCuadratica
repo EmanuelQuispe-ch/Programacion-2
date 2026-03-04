@@ -1,0 +1,73 @@
+package EcuacionCuadratica;
+
+public class EcuacionCuadratica1 {
+    private double a;
+    private double b;
+    private double c;
+    public EcuacionCuadratica1(double a, double b, double c) {
+        this.a = a;
+        this.b = b;
+        this.c = c;
+    }
+
+    public double getDiscriminante() {
+        return b * b - 4 * a * c;
+    }
+    public double getRaiz1() {
+        double discriminante = getDiscriminante();
+        if (discriminante < 0) {
+            return 0; 
+        }
+        return (-b + Math.sqrt(discriminante)) / (2 * a);
+    }
+    public double getRaiz2() {
+        double discriminante = getDiscriminante();
+        if (discriminante < 0) {
+            return 0; 
+        }
+        return (-b - Math.sqrt(discriminante)) / (2 * a);
+    }
+    public boolean tieneRaicesReales() {
+        return getDiscriminante() >= 0;
+    }
+
+    public boolean tieneRaizUnica() {
+        return Math.abs(getDiscriminante()) < 1e-10;
+    }
+    public double getA() { return a; }
+    public double getB() { return b; }
+    public double getC() { return c; }
+}
+
+package EcuacionCuadratica;
+
+import java.util.Scanner;
+
+public class TestEcuacionCuadratica {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("=== ECUACIÓN CUADRÁTICA ax² + bx + c = 0 ===");
+        System.out.print("Ingrese a, b, c (separados por espacios): ");
+        double a = scanner.nextDouble();
+        double b = scanner.nextDouble();
+        double c = scanner.nextDouble();
+        EcuacionCuadratica1 ecuacion = new EcuacionCuadratica1(a, b, c);
+        System.out.printf("\nEcuación: %.1fx² + %.1fx + %.1f = 0%n", a, b, c);
+        System.out.printf("Discriminante: %.4f%n", ecuacion.getDiscriminante());
+        System.out.print("\nResultado: ");
+        if (!ecuacion.tieneRaicesReales()) {
+            System.out.println("La ecuación no tiene raíces reales");
+        } 
+        else if (ecuacion.tieneRaizUnica()) {
+            double raiz = ecuacion.getRaiz1();
+            System.out.printf("La ecuación tiene una raíz %.6f%n", raiz);
+        } 
+        else {
+            double raiz1 = ecuacion.getRaiz1();
+            double raiz2 = ecuacion.getRaiz2();
+            System.out.printf("La ecuación tiene dos raíces %.6f y %.6f%n", raiz1, raiz2);
+        }
+        
+        scanner.close();
+    }
+}
