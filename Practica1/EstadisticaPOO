@@ -1,0 +1,128 @@
+package EstadisticaPOO;
+
+import java.util.Arrays;
+
+public class EstadisticaModular2 {
+    private double[] datos;
+    private int n;         
+    private static final int CAPACIDAD_MAXIMA = 10;
+    public EstadisticaModular2() {
+        this.datos = new double[CAPACIDAD_MAXIMA];
+        this.n = 0;
+    }
+    public void agregarDato(double valor) {
+        if (n < CAPACIDAD_MAXIMA) {
+            datos[n] = valor;
+            n++;
+        } else {
+            System.out.println("Error: Capacidad máxima alcanzada (10 elementos)");
+        }
+    }
+    public void agregarDatos(double[] nuevosDatos) {
+        for (double valor : nuevosDatos) {
+            agregarDato(valor);
+        }
+    }
+    public double[] getDatos() {
+        return Arrays.copyOf(datos, n);
+    }
+    
+    public int getN() {
+        return n;
+    }
+    public double promedio() {
+        if (n == 0) return 0;
+        
+        double suma = 0;
+        for (int i = 0; i < n; i++) {
+            suma += datos[i];
+        }
+        return suma / n;
+    }
+    public double desviacion() {
+        if (n <= 1) return 0;
+        
+        double promedio = this.promedio();
+        double sumaCuadrados = 0;
+        
+        for (int i = 0; i < n; i++) {
+            sumaCuadrados += Math.pow(datos[i] - promedio, 2);
+        }
+        
+        return Math.sqrt(sumaCuadrados / (n - 1));
+    }
+    public void limpiar() {
+        this.n = 0;
+    }
+    public boolean estaLleno() {
+        return n == CAPACIDAD_MAXIMA;
+    }
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Estadística {");
+        sb.append("n=").append(n);
+        sb.append(", datos=").append(Arrays.toString(Arrays.copyOf(datos, n)));
+        if (n > 0) {
+            sb.append(", promedio=").append(String.format("%.2f", promedio()));
+            sb.append(", desviación=").append(String.format("%.5f", desviacion()));
+        }
+        sb.append("}");
+        return sb.toString();
+    }
+}
+
+package EstadisticaModular1;
+import java.util.Scanner;
+import java.util.Locale;
+
+public class TestEstadistica {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        scanner.useLocale(Locale.US);  
+        System.out.println("=== ESTADÍSTICA CON PROGRAMACIÓN ORIENTADA A OBJETOS ===");
+        System.out.println("NOTA: Use punto (.) para decimales (ej: 1.9, 2.5)");
+        EstadisticaModular2 estadistica = new EstadisticaModular2();
+        System.out.print("Ingrese 10 números (separados por espacios): "); 
+        try {
+            for (int i = 0; i < 10; i++) {
+                if (scanner.hasNextDouble()) {
+                    double valor = scanner.nextDouble();
+                    estadistica.agregarDato(valor);
+                } else {
+                    System.out.println("Error: Entrada no válida en la posición " + (i+1));
+                    System.out.println("Asegúrese de usar punto (.) como separador decimal");
+                    return;
+                }
+            }
+            System.out.println("\n--- RESULTADOS ---");
+            System.out.println("Datos ingresados: " + arrayToString(estadistica.getDatos()));
+            System.out.printf("El promedio es %.2f%n", estadistica.promedio());
+            System.out.printf("La desviación estándar es %.5f%n", estadistica.desviacion());
+            System.out.println("\n--- REPRESENTACIÓN DEL OBJETO ---");
+            System.out.println(estadistica);
+            
+        } catch (Exception e) {
+            System.out.println("Error al leer los números: " + e.getMessage());
+            System.out.println("Consejo: Use punto (.) para decimales y espacios entre números");
+        }
+        
+        scanner.close();
+    }
+    public static String arrayToString(double[] array) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] == (int) array[i]) {
+                sb.append((int) array[i]);
+            } else {
+                sb.append(array[i]);
+            }
+            if (i < array.length - 1) {
+                sb.append(", ");
+            }
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+}
