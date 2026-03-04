@@ -31,4 +31,68 @@ public class Cronometro {
 	        return finaliza - inicia;
 	    }
 	}
-  
+  package Crono;
+
+import java.util.Random;
+
+public class pruebaCronometro {
+    public static void main(String[] args) {
+       
+        int[] numeros = new int[100000];
+        Random rand = new Random();
+        
+        for (int i = 0; i < numeros.length; i++) {
+            numeros[i] = rand.nextInt(1000000);
+        }
+        
+     
+        Cronometro crono = new Cronometro();
+        
+        System.out.println("Iniciando ordenación de 100,000 números...");
+        System.out.println("Hora de inicio: " + crono.getInicia() + " ms");
+        
+       
+        crono.inicia();
+        
+       
+        ordenacionSeleccion(numeros);
+        
+        
+        crono.detener();
+        
+        System.out.println("Hora de finalización: " + crono.getFinaliza() + " ms");
+        System.out.println("Tiempo transcurrido: " + crono.lapsoDeTiempo() + " milisegundos");
+        System.out.println("Tiempo transcurrido: " + (crono.lapsoDeTiempo() / 1000.0) + " segundos");
+        
+
+        System.out.println("¿Está ordenado? " + estaOrdenado(numeros));
+    }
+    
+
+    public static void ordenacionSeleccion(int[] arr) {
+        int n = arr.length;
+        
+        for (int i = 0; i < n - 1; i++) {
+            int indiceMinimo = i;
+            for (int j = i + 1; j < n; j++) {
+                if (arr[j] < arr[indiceMinimo]) {
+                    indiceMinimo = j;
+                }
+            }
+
+            int temp = arr[indiceMinimo];
+            arr[indiceMinimo] = arr[i];
+            arr[i] = temp;
+        }
+    }
+    
+
+    public static boolean estaOrdenado(int[] arr) {
+        for (int i = 0; i < arr.length - 1; i++) {
+            if (arr[i] > arr[i + 1]) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
