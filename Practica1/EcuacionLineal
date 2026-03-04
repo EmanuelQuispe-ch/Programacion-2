@@ -1,0 +1,97 @@
+package EcuacionLineal;
+
+public class EcuacionLineal1 {
+    private double a;
+    private double b;
+    private double c;
+    private double d;
+    private double e;
+    private double f;
+    
+    public EcuacionLineal1(double a, double b, double c, double d, double e, double f) {
+        this.a = a;
+        this.b = b;
+        this.c = c;
+        this.d = d;
+        this.e = e;
+        this.f = f;
+    }
+
+    public boolean tieneSolucion() {
+        double determinante = a * d - b * c;
+        return Math.abs(determinante) > 1e-10;
+    }
+
+    public double getX() {
+        if (!tieneSolucion()) {
+            throw new IllegalStateException("La ecuación no tiene solución");
+        }
+        double determinante = a * d - b * c;
+        return (e * d - b * f) / determinante;
+    }
+
+    public double getY() {
+        if (!tieneSolucion()) {
+            throw new IllegalStateException("La ecuación no tiene solución");
+        }
+        double determinante = a * d - b * c;
+        return (a * f - e * c) / determinante;
+    }
+
+    public double getA() { return a; }
+    public double getB() { return b; }
+    public double getC() { return c; }
+    public double getD() { return d; }
+    public double getE() { return e; }
+    public double getF() { return f; }
+}
+
+package EcuacionLineal;
+import java.util.Scanner;
+
+public class TestEcuacionLineal {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.println("=== SISTEMA DE ECUACIONES LINEALES 2x2 ===");
+        System.out.println("El sistema tiene la forma:");
+        System.out.println("ax + by = e");
+        System.out.println("cx + dy = f");
+        System.out.println();
+        System.out.println("PRIMER SISTEMA:");
+        System.out.print("Ingrese a, b, c, d, e, f (separados por espacios): ");
+        double a1 = scanner.nextDouble();
+        double b1 = scanner.nextDouble();
+        double c1 = scanner.nextDouble();
+        double d1 = scanner.nextDouble();
+        double e1 = scanner.nextDouble();
+        double f1 = scanner.nextDouble();
+        
+        EcuacionLineal1 ecuacion1 = new EcuacionLineal1(a1, b1, c1, d1, e1, f1);
+        
+        System.out.println("\nResultado:");
+        if (ecuacion1.tieneSolucion()) {
+            System.out.printf("x = %.1f, y = %.1f%n", ecuacion1.getX(), ecuacion1.getY());
+        } else {
+            System.out.println("La ecuación no tiene solución");
+        }
+        System.out.println("\n----------------------------------------\n");
+        System.out.println("SEGUNDO SISTEMA:");
+        System.out.print("Ingrese a, b, c, d, e, f (separados por espacios): ");
+        double a2 = scanner.nextDouble();
+        double b2 = scanner.nextDouble();
+        double c2 = scanner.nextDouble();
+        double d2 = scanner.nextDouble();
+        double e2 = scanner.nextDouble();
+        double f2 = scanner.nextDouble();
+        EcuacionLineal1 ecuacion2 = new EcuacionLineal1(a2, b2, c2, d2, e2, f2);
+        
+        System.out.println("\nResultado:");
+        if (ecuacion2.tieneSolucion()) {
+            System.out.printf("x = %.1f, y = %.1f%n", ecuacion2.getX(), ecuacion2.getY());
+        } else {
+            System.out.println("La ecuación no tiene solución");
+        }  
+        scanner.close();
+    }
+}
